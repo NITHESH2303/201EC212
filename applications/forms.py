@@ -1,8 +1,6 @@
-# import form as form
 from flask_login import LoginManager
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileRequired
-# from flask_uploads import UploadSet, IMAGES, configure_uploads
 from wtforms import StringField, PasswordField, SubmitField, FileField, BooleanField, SelectField, form, TextAreaField
 from wtforms.validators import InputRequired, ValidationError, Length
 from applications.models import *
