@@ -2,9 +2,31 @@ import os
 import sqlite3 
 from flask import render_template
 from flask import current_app as app
+from flask_login import LoginManager, login_required, logout_user, login_user, current_user
+from sqlalchemy import values
 from applications.config import *
 from applications.models import *
 
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
+
+@app.route('/')
+def index():
+    return redirect(url_for('signin'))
+
+@app.route('/login', methods=['GET','POST'])
+def signin():
+    form = signinForm()
+    if form.validate_on_submit():
+        user = db.session.query(User).filter_by(username=form.cleaned_data).first()
+        if user:
+            if user.password == form.password.data:
+                # user.last_login = str(datetime.today())[:16]
+                login_user(user)
+                return redirect(url_for('explore'))
+    return render_template('signin.html')   
 
 @app.route('/trains', methods = ['GET'])
 def  trains():
